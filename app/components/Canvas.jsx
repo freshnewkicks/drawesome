@@ -114,13 +114,13 @@ export default function Canvas() {
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}
             onTouchEnd={handleMouseUp}
-            className="w-screen h-screen bg-slate-800 flex flex-row items-center justify-center overscroll-contain overflow-y-hidden">
+            className="w-full h-full bg-slate-800 flex flex-row items-center justify-center overscroll-contain overflow-y-hidden">
 
                 <canvas
                     ref={ART}
                     height="640"
                     width="640"
-                    className="min-w-[320px] max-w-[640px] min-h-[320px] h-[640px] border border-8 border-red-400 bg-white rounded-lg p-0 m-0"
+                    className="min-w-[320px] max-w-[640px] border border-8 border-red-400 bg-white rounded-lg p-0 m-0"
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                     onMouseLeave={handleCanvasLeave}
