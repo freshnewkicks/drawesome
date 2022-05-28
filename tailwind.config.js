@@ -3,7 +3,11 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'slideUp': 'slideUp .09s linear forwards'
+      }
+    },
   },
   plugins: [],
 }
