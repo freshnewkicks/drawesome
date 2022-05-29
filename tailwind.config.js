@@ -5,7 +5,9 @@ module.exports = {
   theme: {
     extend: {
       animation: {
-        'slideUp': 'slideUp .09s linear forwards'
+        'slideUp': 'slideUp .09s linear forwards',
+        'toolboxSlideOut': 'toolboxSlideOut .15s linear forwards',
+        'toolboxSlideIn': 'toolboxSlideIn .15s linear forwards'
       }
     },
   },

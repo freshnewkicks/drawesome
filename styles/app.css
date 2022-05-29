@@ -6,3 +6,13 @@
     from { bottom: 1rem; }
     to { bottom: 2rem; }
 }
+
+@keyframes toolboxSlideOut {
+    from { width: 3.5rem }
+    to { width: 50% }
+}
+
+@keyframes toolboxSlideIn {
+    from { width: 50% }
+    to { width: 3.5rem }
+}

@@ -2,15 +2,17 @@ import React, {useCallback, useEffect, useRef, useState} from "react"
 
 import useScrollBlock from 'app/hooks/useScrollBlock.jsx'
 export default function Canvas() {
-    const ART = useRef();
-    let prevMouse = useRef({x:0, y:0});
-    let pencil = false;
-    let first = false;
-    const SIZE = 5;
-    const COLOR = 'black';
-    const OFFSET = 0.1;
+    const [pencil, setPencil] = useState(false)
+    const [firstDraw, setFirstDraw] = useState(false)
+    const [size, setSize] = useState(5)
+    const [color, setColor] = useState('red')
+    const [offset, setOffset] = useState(0.1)
 
     const [blockScroll, allowScroll] = useScrollBlock();
+
+    const ART = useRef();
+    let prevMouse = useRef({x:0, y:0});
+
     blockScroll()
 
     const drawTouch = (e) => {
@@ -22,7 +24,9 @@ export default function Canvas() {
         }
 
         ctx.beginPath();
-        ctx.lineWidth = SIZE;
+        ctx.lineWidth = size;
+        ctx.lineCap = 'round'
+
 
         let x = e.touches[0].clientX - canvas.left;
         let y = e.touches[0].clientY - canvas.top;
@@ -30,19 +34,20 @@ export default function Canvas() {
         y = y * ART.current.height / ART.current.clientHeight;
         if( first ) {
             prevMouse.current = {x: x, y: y}
-            first = false;
+            setFirstDraw(false)
         }
-        const LOWER_X = prevMouse.current.x - OFFSET;
-        const UPPER_X = prevMouse.current.x + OFFSET;
-        const LOWER_Y = prevMouse.current.y - OFFSET;
-        const UPPER_Y = prevMouse.current.y + OFFSET;
+        const LOWER_X = prevMouse.current.x - offset;
+        const UPPER_X = prevMouse.current.x + offset;
+        const LOWER_Y = prevMouse.current.y - offset;
+        const UPPER_Y = prevMouse.current.y + offset;
         if ((x > UPPER_X || x < LOWER_X || y > UPPER_Y || y < LOWER_Y)) {
             ctx.moveTo(prevMouse.current.x, prevMouse.current.y);
             ctx.lineTo(x, y);
+            ctx.strokeStyle = color;
             ctx.stroke();
         } else {
             ctx.arc(x, y, 1, 0, 2 * Math.PI, false);
-            ctx.fillStyle = COLOR;
+            ctx.fillStyle = color;
             ctx.fill();
         }
         prevMouse.current = {x: x, y: y}
@@ -57,27 +62,29 @@ export default function Canvas() {
         }
 
         ctx.beginPath();
-        ctx.lineWidth = SIZE;
+        ctx.lineWidth = size;
+        ctx.lineCap = 'round'
 
         let x = e.clientX - canvas.left;
         let y = e.clientY - canvas.top;
         x = x * ART.current.width / ART.current.clientWidth;
         y = y * ART.current.height / ART.current.clientHeight;
-        if( first ) {
+        if( firstDraw ) {
             prevMouse.current = {x: x, y: y}
-            first = false;
+            setFirstDraw(false)
         }
-        const LOWER_X = prevMouse.current.x - OFFSET;
-        const UPPER_X = prevMouse.current.x + OFFSET;
-        const LOWER_Y = prevMouse.current.y - OFFSET;
-        const UPPER_Y = prevMouse.current.y + OFFSET;
+        const LOWER_X = prevMouse.current.x - offset;
+        const UPPER_X = prevMouse.current.x + offset;
+        const LOWER_Y = prevMouse.current.y - offset;
+        const UPPER_Y = prevMouse.current.y + offset;
         if ((x > UPPER_X || x < LOWER_X || y > UPPER_Y || y < LOWER_Y)) {
             ctx.moveTo(prevMouse.current.x, prevMouse.current.y);
             ctx.lineTo(x, y);
+            ctx.strokeStyle = color;
             ctx.stroke();
         } else {
             ctx.arc(x, y, 1, 0, 2 * Math.PI, false);
-            ctx.fillStyle = COLOR;
+            ctx.fillStyle = color;
             ctx.fill();
         }
         prevMouse.current = {x: x, y: y}
@@ -91,20 +98,20 @@ export default function Canvas() {
         drawTouch(e)
     }
     const handleMouseDown = () =>{
-        pencil = true
-        first = true;
+        setPencil(true)
+        setFirstDraw(true)
     }
 
     const handleMouseLeave = () => {
-        pencil = false
+        setPencil(false)
     }
 
     const handleMouseUp = () => {
-        pencil = false
+        setPencil(false)
     }
 
     const handleCanvasLeave = () => {
-        pencil = false
+        setPencil(false)
     }
 
 
