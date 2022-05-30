@@ -7,7 +7,7 @@ module.exports = {
       animation: {
         'slideUp': 'slideUp .09s linear forwards',
         'toolboxSlideOut': 'toolboxSlideOut .15s linear forwards',
-        'toolboxSlideIn': 'toolboxSlideIn .15s linear forwards'
+        'toolboxSlideIn': 'toolboxSlideIn .15s linear forwards',
       }
     },
   },
