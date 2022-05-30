@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react'
 export default function Timer(props) {
     const [counter, setCounter] = useState(props.seconds)
     const [counterMs, setCounterMs] = useState(props.ms)
-    const [flag, setFlag] = useState(true)
+
+    const [flag, setFlag] = useState(props.passFlag)
 
     useEffect( () => {
-
         if (counter > 0) {
             if (counterMs > 0) {
                 setTimeout(() => {
@@ -27,7 +27,8 @@ export default function Timer(props) {
                 counter > 0 ?
                     <div className={props.textColor}>Countdown: { counter + '.' + counterMs }</div>
                     :
-                    props.passFlag(flag)
+                    <div className={props.textColor}>Expired</div>
+
             }
         </div>
     )

@@ -1,19 +1,25 @@
 import React, {useCallback, useEffect, useRef, useState} from "react"
 
 import useScrollBlock from 'app/hooks/useScrollBlock.jsx'
-export default function Canvas() {
+
+export default function Canvas(props) {
     const [pencil, setPencil] = useState(false)
     const [firstDraw, setFirstDraw] = useState(false)
     const [size, setSize] = useState(5)
-    const [color, setColor] = useState('red')
+    const [color, setColor] = useState()
     const [offset, setOffset] = useState(0.1)
-
     const [blockScroll, allowScroll] = useScrollBlock();
 
     const ART = useRef();
     let prevMouse = useRef({x:0, y:0});
 
     blockScroll()
+
+    useEffect(() => {
+        setColor(props.passColor)
+        console.log(color)
+    }, [props.passColor])
+
 
     const drawTouch = (e) => {
         let ctx = ART.current.getContext('2d');
@@ -97,6 +103,7 @@ export default function Canvas() {
     const handleTouchMove = (e) => {
         drawTouch(e)
     }
+
     const handleMouseDown = () =>{
         setPencil(true)
         setFirstDraw(true)
@@ -108,13 +115,12 @@ export default function Canvas() {
 
     const handleMouseUp = () => {
         setPencil(false)
+
     }
 
     const handleCanvasLeave = () => {
         setPencil(false)
     }
-
-
 
     return (
         <div
