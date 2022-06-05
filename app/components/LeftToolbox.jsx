@@ -22,7 +22,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { HiColorSwatch, HiQuestionMarkCircle, HiGlobeAlt, HiPencil, HiMail, HiOutlineNewspaper } from "react-icons/hi";
 import { GoMarkGithub } from "react-icons/go";
-import { ChromePicker } from 'react-color';
+import { GooglePicker } from 'react-color';
 
 
 const drawerWidth = 240;
@@ -74,17 +74,35 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-const style = {
+const drawerStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: 'background.paper',
+    bgcolor: 'transparent',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
 };
+
+const handleOpenToolbox = () => {
+    return (
+        <Modal
+            open={openModal}
+            onClose={handleCloseModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            className="position absolute h-full w-full flex justify-center items-center z-40">
+            <Box>
+                <GooglePicker
+                    color={currentColor}
+                    onChange={(colorD) => sendCurrentColor(colorD)}
+                />
+            </Box>
+        </Modal>
+        )
+}
 
 export default function PersistentDrawerLeft(props) {
     const theme = useTheme();
@@ -180,21 +198,6 @@ export default function PersistentDrawerLeft(props) {
                                     primary={text}
                                     onClick={handleModalOpen}/>
                                 }
-                                { openModal &&
-                                    <Modal
-                                    open={openModal}
-                                    onClose={handleCloseModal}
-                                    aria-labelledby="modal-modal-title"
-                                    aria-describedby="modal-modal-description"
-                                    >
-                                    <Box sx='drawerStyle'>
-                                        <ChromePicker
-                                            color={currentColor}
-                                            onChange={(colorD) => sendCurrentColor(colorD)}
-                                        />
-                                    </Box>
-                                    </Modal>
-                                }
                                 {text === 'Pencil Size' &&
                                     <ListItemText primary={text}/>
                                 }
@@ -202,6 +205,10 @@ export default function PersistentDrawerLeft(props) {
                                     <ListItemText primary={text}/>}
                                 {text === 'FAQ' &&
                                     <ListItemText primary={text}/>}
+
+                                { openModal &&
+                                    handleOpenToolbox()
+                                }
                             </ListItemButton>
                         </ListItem>
                     ))}

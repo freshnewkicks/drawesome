@@ -16,8 +16,9 @@ export default function App() {
       <div className="overscroll-contain overflow-y-hidden h-screen w-screen">
           <LeftToolbox passColor={setToolboxColor} />
           <div className="flex items-center justify-center h-screen w-screen bg-slate-800 z-40">
-              <div className="min-w-[320px] max-w-[640px] position absolute border border-[1rem] border-red-400 rounded-lg">
+              <div className="position absolute">
                   <Drawer />
+
                   <Timer
                       ms='60'
                       seconds='20'
