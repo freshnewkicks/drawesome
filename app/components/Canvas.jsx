@@ -5,7 +5,7 @@ import useScrollBlock from 'app/hooks/useScrollBlock.jsx'
 export default function Canvas(props) {
     const [pencil, setPencil] = useState(false)
     const [firstDraw, setFirstDraw] = useState(false)
-    const [size, setSize] = useState(5)
+    const [size, setSize] = useState(15)
     const [color, setColor] = useState()
     const [offset, setOffset] = useState(0.1)
     const [blockScroll, allowScroll] = useScrollBlock();
@@ -38,7 +38,7 @@ export default function Canvas(props) {
         let y = e.touches[0].clientY - canvas.top;
         x = x * ART.current.width / ART.current.clientWidth;
         y = y * ART.current.height / ART.current.clientHeight;
-        if( first ) {
+        if( firstDraw ) {
             prevMouse.current = {x: x, y: y}
             setFirstDraw(false)
         }
@@ -128,12 +128,11 @@ export default function Canvas(props) {
             onMouseUp={handleMouseUp}
             onTouchEnd={handleMouseUp}
             className="w-full h-full bg-slate-800 flex flex-row items-center justify-center overscroll-contain overflow-y-hidden">
-
                 <canvas
                     ref={ART}
-                    height="640"
-                    width="640"
-                    className="min-w-[320px] max-w-[640px] border border-8 border-red-400 bg-white rounded-lg p-0 m-0"
+                    width="640px"
+                    height="480px"
+                    className="md:w-[640px] md:h-[550px] w-[400px] h-[390px] bg-white rounded-lg p-0 m-0 border border-8 border-red-800"
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                     onMouseLeave={handleCanvasLeave}
