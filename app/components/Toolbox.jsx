@@ -18,7 +18,6 @@ export default function Toolbox(props) {
     const [toolboxOpen, setToolboxOpen] = useState(false);
     const [currentColor, setCurrentColor] = useState();
     const [openModal, setOpenModal] = useState(false);
-    const [freeze, setFreeze] = useState(false)
 
     const sendCurrentColor = (color) => {
         setCurrentColor(color.hex)
@@ -47,8 +46,7 @@ export default function Toolbox(props) {
             sx={{ width: anchor === 'left' || anchor === 'bottom' ? 'auto' : 250 }}
             role="presentation"
             onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}
-        >
+            onKeyDown={toggleDrawer(anchor, false)}>
             <List>
                 {['Color Picker', 'Pencil Size', 'Find Game', 'FAQ'].map((text, index) => (
                     <ListItem key={text} disablePadding>
@@ -85,23 +83,8 @@ export default function Toolbox(props) {
                             {text === 'FAQ' &&
                                 <ListItemText primary={text}/>}
 
-                            { openModal &&
-                                <Modal
-                                    open={openModal}
-                                    onClose={handleCloseModal}
-                                    aria-labelledby="modal-modal-title"
-                                    aria-describedby="modal-modal-description"
-                                    className="position absolute h-full w-full flex justify-center items-center z-40">
-                                    <Box>
-                                        <GooglePicker
-                                            color={currentColor}
-                                            onChange={(colorD) => sendCurrentColor(colorD)}
-                                        />
-                                    </Box>
-                                </Modal>
-                            }
 
-                            { openModal && setFreeze(true)}
+
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -135,11 +118,24 @@ export default function Toolbox(props) {
                     <Drawer
                         anchor={'left'}
                         open={toolboxOpen['left']}
-                        onClose={toggleDrawer('left', false)}
-                    >
-
+                        onClose={toggleDrawer('left', false)}>
                         {list('left')}
                     </Drawer>
+                    { openModal &&
+                        <Modal
+                            open={openModal}
+                            onClose={handleCloseModal}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                            className="position absolute h-full w-full flex justify-center items-center z-40">
+                            <Box>
+                                <GooglePicker
+                                    color={currentColor}
+                                    onChange={(color) => sendCurrentColor(color)}
+                                />
+                            </Box>
+                        </Modal>
+                    }
                 </React.Fragment>
           }
         </div>

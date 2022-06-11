@@ -17,7 +17,6 @@ export default function Canvas(props) {
 
     useEffect(() => {
         setColor(props.passColor)
-        console.log(color)
     }, [props.passColor])
 
 

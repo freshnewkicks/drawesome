@@ -89,9 +89,8 @@ const drawerStyle = {
 export default function PersistentDrawerLeft(props) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [currentColor, setCurrentColor] = React.useState()
+    const [currentColor, setCurrentColor] = React.useState(props.currentColor)
     const [openModal, setOpenModal] = React.useState(false);
-
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -101,6 +100,9 @@ export default function PersistentDrawerLeft(props) {
         setOpenModal(true)
     }
 
+    const handleModalClose = () => {
+        setOpenModal(false)
+    };
 
     const handleDrawerClose = () => {
         setOpen(false);
@@ -184,7 +186,7 @@ export default function PersistentDrawerLeft(props) {
                                 { openModal &&
                                     <Modal
                                         open={openModal}
-                                        onClose={handleCloseModal}
+                                        onClose={handleModalClose}
                                         aria-labelledby="modal-modal-title"
                                         aria-describedby="modal-modal-description"
                                         className="position absolute h-full w-full flex justify-center items-center z-40">

@@ -13,9 +13,13 @@ export default function App() {
         setFlagData(data)
     }
 
+    const receiveColorData = (data) => {
+        setToolboxColor(data)
+    }
+
   return (
       <div className="overscroll-contain overflow-y-hidden h-screen w-screen">
-          <Toolbox />
+          <Toolbox passColor={setToolboxColor}/>
           <div className="flex items-center justify-center h-screen w-screen bg-slate-800 z-40">
               <div className="position absolute">
                   <Drawer />
