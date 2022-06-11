@@ -86,34 +86,11 @@ const drawerStyle = {
     p: 4,
 };
 
-const handleOpenToolbox = () => {
-    return (
-        <Modal
-            open={openModal}
-            onClose={handleCloseModal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            className="position absolute h-full w-full flex justify-center items-center z-40">
-            <Box>
-                <GooglePicker
-                    color={currentColor}
-                    onChange={(colorD) => sendCurrentColor(colorD)}
-                />
-            </Box>
-        </Modal>
-        )
-}
-
 export default function PersistentDrawerLeft(props) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [currentColor, setCurrentColor] = React.useState()
+    const [currentColor, setCurrentColor] = React.useState(props.currentColor)
     const [openModal, setOpenModal] = React.useState(false);
-
-    const sendCurrentColor = (color) => {
-        setCurrentColor(color.hex)
-        props.passColor(currentColor)
-    }
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -123,9 +100,9 @@ export default function PersistentDrawerLeft(props) {
         setOpenModal(true)
     }
 
-    const handleCloseModal = () => {
+    const handleModalClose = () => {
         setOpenModal(false)
-    }
+    };
 
     const handleDrawerClose = () => {
         setOpen(false);
@@ -207,7 +184,19 @@ export default function PersistentDrawerLeft(props) {
                                     <ListItemText primary={text}/>}
 
                                 { openModal &&
-                                    handleOpenToolbox()
+                                    <Modal
+                                        open={openModal}
+                                        onClose={handleModalClose}
+                                        aria-labelledby="modal-modal-title"
+                                        aria-describedby="modal-modal-description"
+                                        className="position absolute h-full w-full flex justify-center items-center z-40">
+                                        <Box>
+                                            <GooglePicker
+                                                color={currentColor}
+                                                onChange={(colorD) => sendCurrentColor(colorD)}
+                                            />
+                                        </Box>
+                                    </Modal>
                                 }
                             </ListItemButton>
                         </ListItem>
