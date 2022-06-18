@@ -17,19 +17,19 @@ export default function Toolbox(props) {
     // state always sets drawer to the left
     const [toolboxOpen, setToolboxOpen] = useState(false);
     const [currentColor, setCurrentColor] = useState();
-    const [openModal, setOpenModal] = useState(false);
+    const [openColorModal, setOpenColorModal] = useState(false);
 
     const sendCurrentColor = (color) => {
         setCurrentColor(color.hex)
         props.passColor(currentColor)
     }
 
-    const handleModalOpen = () => {
-        setOpenModal(true)
-    }
-
-    const handleCloseModal = () => {
-        setOpenModal(false)
+    const handleColorModal = () => {
+        if (openColorModal) {
+            setOpenModal(false)
+        } else {
+            setOpenModal(true)
+        }
     }
 
 
@@ -45,8 +45,8 @@ export default function Toolbox(props) {
         <Box
             sx={{ width: anchor === 'left' || anchor === 'bottom' ? 'auto' : 250 }}
             role="presentation"
-            onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}>
+            onClick={ toggleDrawer(anchor, false) }
+            onKeyDown={ toggleDrawer(anchor, false) }>
             <List>
                 {['Color Picker', 'Pencil Size', 'Find Game', 'FAQ'].map((text, index) => (
                     <ListItem key={text} disablePadding>
@@ -73,7 +73,7 @@ export default function Toolbox(props) {
                             {text === 'Color Picker' &&
                                 <ListItemText
                                     primary={text}
-                                    onClick={handleModalOpen}/>
+                                    onClick={handleColorModal}/>
                             }
                             {text === 'Pencil Size' &&
                                 <ListItemText primary={text}/>
@@ -82,9 +82,6 @@ export default function Toolbox(props) {
                                 <ListItemText primary={text}/>}
                             {text === 'FAQ' &&
                                 <ListItemText primary={text}/>}
-
-
-
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -113,7 +110,7 @@ export default function Toolbox(props) {
                 <React.Fragment key={0}>
                     <Button
                         onClick={toggleDrawer('left', true)}>
-                            Open Toolbox
+                        Open Toolbox
                     </Button>
                     <Drawer
                         anchor={'left'}
@@ -121,10 +118,10 @@ export default function Toolbox(props) {
                         onClose={toggleDrawer('left', false)}>
                         {list('left')}
                     </Drawer>
-                    { openModal &&
+                    { openColorModal &&
                         <Modal
-                            open={openModal}
-                            onClose={handleCloseModal}
+                            open={openColorModal}
+                            onClose={handleColorModal}
                             aria-labelledby="modal-modal-title"
                             aria-describedby="modal-modal-description"
                             className="position absolute h-full w-full flex justify-center items-center z-40">
@@ -137,7 +134,7 @@ export default function Toolbox(props) {
                         </Modal>
                     }
                 </React.Fragment>
-          }
+            }
         </div>
     );
 }

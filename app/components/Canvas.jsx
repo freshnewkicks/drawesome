@@ -5,7 +5,7 @@ import useScrollBlock from 'app/hooks/useScrollBlock.jsx'
 export default function Canvas(props) {
     const [pencil, setPencil] = useState(false)
     const [firstDraw, setFirstDraw] = useState(false)
-    const [size, setSize] = useState(15)
+    const [size, setSize] = useState(5)
     const [color, setColor] = useState()
     const [offset, setOffset] = useState(0.1)
     const [blockScroll, allowScroll] = useScrollBlock();
@@ -18,7 +18,6 @@ export default function Canvas(props) {
     useEffect(() => {
         setColor(props.passColor)
     }, [props.passColor])
-
 
     const drawTouch = (e) => {
         let ctx = ART.current.getContext('2d');
@@ -95,6 +94,10 @@ export default function Canvas(props) {
         prevMouse.current = {x: x, y: y}
     }
 
+    const handleClearCanvas = (e) => {
+        let ctx = ART.current.getContext('2d');
+        ctx.clearRect(0, 0, 640, 480);
+    }
     const handleMouseMove = (e) => {
         draw(e)
     }
@@ -126,7 +129,10 @@ export default function Canvas(props) {
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}
             onTouchEnd={handleMouseUp}
-            className="w-full h-full bg-slate-800 flex flex-row items-center justify-center overscroll-contain overflow-y-hidden">
+            className="w-full h-full bg-slate-800 flex flex-col items-center justify-center overscroll-contain overflow-y-hidden">
+            <button
+                onClick={handleClearCanvas}
+                className="text-white">Clear</button>
                 <canvas
                     ref={ART}
                     width="640px"
@@ -138,8 +144,6 @@ export default function Canvas(props) {
                     onMouseMove={handleMouseMove}
                     onTouchStart={handleMouseDown}
                     onTouchMove={handleTouchMove}></canvas>
-
-
         </div>
     );
 

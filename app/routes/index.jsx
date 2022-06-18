@@ -13,10 +13,6 @@ export default function App() {
         setFlagData(data)
     }
 
-    const receiveColorData = (data) => {
-        setToolboxColor(data)
-    }
-
   return (
       <div className="overscroll-contain overflow-y-hidden h-screen w-screen">
           <Toolbox passColor={setToolboxColor}/>
