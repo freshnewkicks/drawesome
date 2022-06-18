@@ -13,11 +13,40 @@ import {GoMarkGithub} from "react-icons/go";
 import Modal from "@mui/material/Modal";
 import {GooglePicker} from "react-color";
 
+
+
+
 export default function Toolbox(props) {
     // state always sets drawer to the left
     const [toolboxOpen, setToolboxOpen] = useState(false);
     const [currentColor, setCurrentColor] = useState();
+    const [currentPencil, setCurrentPencil] = useState();
     const [openColorModal, setOpenColorModal] = useState(false);
+    const [openPencilModal, setOpenPencilModal] = useState(false);
+
+    useEffect(() => {
+        setCurrentPencil(props.currentPencil)
+    }, [props.currentPencil])
+
+    const PencilPicker = (props) => {
+
+        return (
+            <>
+                <div
+                    className="w-full h-[55%] bg-gray-200 rounded-md">
+                    <div className="flex justify-center "><h1 className="text-black">Pencil Picker</h1></div>
+                    <div className="w-full border-[0.5px] border-dashed border-black"></div>
+                    <div className="w-full flex flex-col">
+                        <button className="py-2 hover:text-lg">Small</button>
+                        <button className="py-2 hover:text-lg">Medium</button>
+                        <button className="py-2 hover:text-lg">Large</button>
+                        <button className="py-2 hover:text-lg">Super Massive</button>
+                    </div>
+                </div>
+            </>
+
+        )
+    }
 
     const sendCurrentColor = (color) => {
         setCurrentColor(color.hex)
@@ -26,9 +55,17 @@ export default function Toolbox(props) {
 
     const handleColorModal = () => {
         if (openColorModal) {
-            setOpenModal(false)
+            setOpenColorModal(false)
         } else {
-            setOpenModal(true)
+            setOpenColorModal(true)
+        }
+    }
+
+    const handlePencilModal = () => {
+        if (openPencilModal) {
+            setOpenPencilModal(false)
+        } else {
+            setOpenPencilModal(true)
         }
     }
 
@@ -76,7 +113,10 @@ export default function Toolbox(props) {
                                     onClick={handleColorModal}/>
                             }
                             {text === 'Pencil Size' &&
-                                <ListItemText primary={text}/>
+                                <ListItemText
+                                    primary={text}
+                                    onClick={handlePencilModal}
+                                />
                             }
                             {text === 'Find Game' &&
                                 <ListItemText primary={text}/>}
@@ -123,7 +163,7 @@ export default function Toolbox(props) {
                             open={openColorModal}
                             onClose={handleColorModal}
                             aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
+                            aria-describedby="the color picker pop up"
                             className="position absolute h-full w-full flex justify-center items-center z-40">
                             <Box>
                                 <GooglePicker
@@ -131,6 +171,19 @@ export default function Toolbox(props) {
                                     onChange={(color) => sendCurrentColor(color)}
                                 />
                             </Box>
+                        </Modal>
+                    }
+                    {openPencilModal &&
+                        <Modal
+                            open={openPencilModal}
+                            onClose={handlePencilModal}
+                            aria-labelledby="pencil-modal"
+                            aria-describedby="the pencil picker pop up"
+                            className="position absolute h-full w-full flex justify-center items-center z-40">
+                                <Box>
+                                    <PencilPicker />
+                                </Box>
+
                         </Modal>
                     }
                 </React.Fragment>

@@ -98,6 +98,7 @@ export default function Canvas(props) {
         let ctx = ART.current.getContext('2d');
         ctx.clearRect(0, 0, 640, 480);
     }
+
     const handleMouseMove = (e) => {
         draw(e)
     }
@@ -129,10 +130,10 @@ export default function Canvas(props) {
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}
             onTouchEnd={handleMouseUp}
-            className="w-full h-full bg-slate-800 flex flex-col items-center justify-center overscroll-contain overflow-y-hidden">
+            className="w-full bg-transparent flex flex-col items-center justify-center overscroll-contain overflow-y-hidden">
             <button
                 onClick={handleClearCanvas}
-                className="text-white">Clear</button>
+                className="w-[9%] position absolute right-0 -top-0.5 text-white bg-none flex justify-center items-start">Clear</button>
                 <canvas
                     ref={ART}
                     width="640px"
