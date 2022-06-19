@@ -5,8 +5,8 @@ import useScrollBlock from 'app/hooks/useScrollBlock.jsx'
 export default function Canvas(props) {
     const [pencil, setPencil] = useState(false)
     const [firstDraw, setFirstDraw] = useState(false)
-    const [size, setSize] = useState(5)
-    const [color, setColor] = useState()
+    const [size, setSize] = useState()
+    const [color, setColor] = useState(props.passColor)
     const [offset, setOffset] = useState(0.1)
     const [blockScroll, allowScroll] = useScrollBlock();
 
@@ -17,7 +17,8 @@ export default function Canvas(props) {
 
     useEffect(() => {
         setColor(props.passColor)
-    }, [props.passColor])
+        setSize(props.passPencil)
+    }, [props.passColor, props.passPencil])
 
     const drawTouch = (e) => {
         let ctx = ART.current.getContext('2d');

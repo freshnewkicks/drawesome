@@ -9,26 +9,27 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import {HiColorSwatch, HiGlobeAlt, HiMail, HiOutlineNewspaper, HiPencil, HiQuestionMarkCircle} from "react-icons/hi";
-import {GoMarkGithub} from "react-icons/go";
+import { GoMarkGithub } from "react-icons/go";
 import Modal from "@mui/material/Modal";
-import {GooglePicker} from "react-color";
-
-
-
+import { GooglePicker } from "react-color";
 
 export default function Toolbox(props) {
     // state always sets drawer to the left
     const [toolboxOpen, setToolboxOpen] = useState(false);
     const [currentColor, setCurrentColor] = useState();
-    const [currentPencil, setCurrentPencil] = useState();
+    const [currentPencil, setCurrentPencil] = useState(0);
     const [openColorModal, setOpenColorModal] = useState(false);
     const [openPencilModal, setOpenPencilModal] = useState(false);
 
     useEffect(() => {
-        setCurrentPencil(props.currentPencil)
-    }, [props.currentPencil])
+        props.passPencil(currentPencil)
+    }, [currentPencil])
 
-    const PencilPicker = (props) => {
+    const PencilPicker = () => {
+
+        function passPencil(size) {
+            setCurrentPencil(size)
+        }
 
         return (
             <>
@@ -37,10 +38,10 @@ export default function Toolbox(props) {
                     <div className="flex justify-center "><h1 className="text-black">Pencil Picker</h1></div>
                     <div className="w-full border-[0.5px] border-dashed border-black"></div>
                     <div className="w-full flex flex-col">
-                        <button className="py-2 hover:text-lg">Small</button>
-                        <button className="py-2 hover:text-lg">Medium</button>
-                        <button className="py-2 hover:text-lg">Large</button>
-                        <button className="py-2 hover:text-lg">Super Massive</button>
+                        <button className="py-2 hover:text-lg" onClick={() => passPencil(1)}>Small</button>
+                        <button className="py-2 hover:text-lg" onClick={() => passPencil(2)}>Medium</button>
+                        <button className="py-2 hover:text-lg" onClick={() => passPencil(3)}>Large</button>
+                        <button className="py-2 hover:text-lg" onClick={() => passPencil(4)}>Super Massive</button>
                     </div>
                 </div>
             </>
