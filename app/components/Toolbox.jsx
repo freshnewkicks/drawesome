@@ -29,12 +29,21 @@ export default function Toolbox(props) {
 
         function passPencil(size) {
             setCurrentPencil(size)
+            return
         }
 
         return (
             <>
                 <div
                     className="w-full h-[55%] bg-gray-200 rounded-md">
+                    <div
+                        className="flex justify-end hover:cursor-pointer"
+                        onClick={handlePencilModal}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </div>
                     <div className="flex justify-center "><h1 className="text-black">Pencil Picker</h1></div>
                     <div className="w-full border-[0.5px] border-dashed border-black"></div>
                     <div className="w-full flex flex-col">
@@ -88,42 +97,58 @@ export default function Toolbox(props) {
             <List>
                 {['Color Picker', 'Pencil Size', 'Find Game', 'FAQ'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            {index === 0 &&
-                                <ListItemIcon>
-                                    <HiColorSwatch />
-                                </ListItemIcon>
-                            }
-                            {index === 1 &&
-                                <ListItemIcon>
-                                    <HiPencil />
-                                </ListItemIcon>}
-                            {index === 2 &&
-                                <ListItemIcon>
-                                    <HiGlobeAlt />
-                                </ListItemIcon>
-                            }
-                            {index === 3 &&
-                                <ListItemIcon>
-                                    <HiQuestionMarkCircle />
-                                </ListItemIcon>
-                            }
                             {text === 'Color Picker' &&
-                                <ListItemText
-                                    primary={text}
-                                    onClick={handleColorModal}/>
+                                <ListItemButton
+                                    fullWidth={true}
+                                    onClick={handleColorModal}
+                                    sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                }}>
+                                    <ListItemIcon>
+                                        <HiColorSwatch />
+                                    </ListItemIcon>
+                                    {text}
+                                </ListItemButton>
                             }
                             {text === 'Pencil Size' &&
-                                <ListItemText
-                                    primary={text}
+                                <ListItemButton
+                                    fullWidth={true}
                                     onClick={handlePencilModal}
-                                />
+                                    sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                }}>
+
+                                    <ListItemIcon>
+                                        <HiPencil />
+                                    </ListItemIcon>
+                                    {text}
+                                </ListItemButton>
                             }
                             {text === 'Find Game' &&
-                                <ListItemText primary={text}/>}
+                                <ListItemButton fullWidth={true} sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                }}>
+                                    <ListItemIcon>
+                                        <HiGlobeAlt />
+                                    </ListItemIcon>
+                                    {text}
+                                </ListItemButton>
+                            }
                             {text === 'FAQ' &&
-                                <ListItemText primary={text}/>}
-                        </ListItemButton>
+                                <ListItemButton fullWidth={true} sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                }}>
+                                    <ListItemIcon>
+                                        <HiQuestionMarkCircle />
+                                    </ListItemIcon>
+                                    {text}
+                                </ListItemButton>
+                            }
+
                     </ListItem>
                 ))}
             </List>
