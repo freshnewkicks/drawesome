@@ -5,8 +5,8 @@ import useScrollBlock from 'app/hooks/useScrollBlock.jsx'
 export default function Canvas(props) {
     const [pencil, setPencil] = useState(false)
     const [firstDraw, setFirstDraw] = useState(false)
-    const [size, setSize] = useState(15)
-    const [color, setColor] = useState()
+    const [size, setSize] = useState()
+    const [color, setColor] = useState(props.passColor)
     const [offset, setOffset] = useState(0.1)
     const [blockScroll, allowScroll] = useScrollBlock();
 
@@ -17,8 +17,8 @@ export default function Canvas(props) {
 
     useEffect(() => {
         setColor(props.passColor)
-    }, [props.passColor])
-
+        setSize(props.passPencil)
+    }, [props.passColor, props.passPencil])
 
     const drawTouch = (e) => {
         let ctx = ART.current.getContext('2d');
@@ -95,6 +95,11 @@ export default function Canvas(props) {
         prevMouse.current = {x: x, y: y}
     }
 
+    const handleClearCanvas = (e) => {
+        let ctx = ART.current.getContext('2d');
+        ctx.clearRect(0, 0, 640, 480);
+    }
+
     const handleMouseMove = (e) => {
         draw(e)
     }
@@ -126,7 +131,10 @@ export default function Canvas(props) {
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}
             onTouchEnd={handleMouseUp}
-            className="w-full h-full bg-slate-800 flex flex-row items-center justify-center overscroll-contain overflow-y-hidden">
+            className="w-full bg-transparent flex flex-col items-center justify-center overscroll-contain overflow-y-hidden">
+            <button
+                onClick={handleClearCanvas}
+                className="w-[9%] position absolute right-0 -top-0.5 text-white bg-none flex justify-center items-start">Clear</button>
                 <canvas
                     ref={ART}
                     width="640px"
@@ -138,8 +146,6 @@ export default function Canvas(props) {
                     onMouseMove={handleMouseMove}
                     onTouchStart={handleMouseDown}
                     onTouchMove={handleTouchMove}></canvas>
-
-
         </div>
     );
 

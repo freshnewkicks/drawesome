@@ -4,8 +4,6 @@ export default function Timer(props) {
     const [counter, setCounter] = useState(props.seconds)
     const [counterMs, setCounterMs] = useState(props.ms)
 
-    const [flag, setFlag] = useState(props.passFlag)
-
     useEffect( () => {
         if (counter > 0) {
             if (counterMs > 0) {
@@ -16,8 +14,6 @@ export default function Timer(props) {
                 setCounterMs(props.ms)
                 setCounter(counter - 1)
             }
-        } else if (counter <= 0) {
-            setFlag(false)
         }
     }, [counter, counterMs])
 
