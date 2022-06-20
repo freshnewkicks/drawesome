@@ -1,10 +1,11 @@
 import Canvas from '../components/Canvas'
 import Drawer from '../components/Drawer'
-import LeftToolbox from '../components/LeftToolbox'
 import Timer from '../components/Timer'
 import { useEffect, useState } from 'react'
 import Toolbox from '../components/Toolbox'
 import {Snackbar} from "@mui/material";
+
+
 
 export default function App() {
     const [toolboxColor, setToolboxColor] = useState()
