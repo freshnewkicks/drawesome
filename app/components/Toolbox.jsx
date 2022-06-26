@@ -11,13 +11,19 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import Input from '@mui/material/Input';
-import {HiColorSwatch, HiGlobeAlt, HiMail, HiOutlineNewspaper, HiPencil, HiQuestionMarkCircle} from "react-icons/hi";
+import { HiColorSwatch, HiGlobeAlt, HiMail, HiOutlineNewspaper, HiPencil, HiQuestionMarkCircle } from "react-icons/hi";
 import { GoMarkGithub } from "react-icons/go";
 import Modal from "@mui/material/Modal";
 import { GooglePicker } from "react-color";
 import SendIcon from '@mui/icons-material/Send'
 import emailjs from '@emailjs/browser';
+import { useLoaderData } from "@remix-run/react";
+import ReCAPTCHA from "react-google-recaptcha";
+
 export default function Toolbox(props) {
+    let loaderData = useLoaderData()
+
+
     // state always sets drawer to the left
     const [toolboxOpen, setToolboxOpen] = useState(false);
     const [currentColor, setCurrentColor] = useState();
@@ -25,17 +31,15 @@ export default function Toolbox(props) {
     const [openColorModal, setOpenColorModal] = useState(false);
     const [openPencilModal, setOpenPencilModal] = useState(false);
     const [openContactModal, setContactMeModal] = useState(false);
-
     const form = useRef()
 
     useEffect(() => {
         props.passPencil(currentPencil)
 
-    }, [currentPencil])
+    }, [props, currentPencil])
 
 
     const ContactMe = () => {
-
         const [submission, setSubmission] = useState({
             waiting: true,
             success: false,
@@ -46,7 +50,7 @@ export default function Toolbox(props) {
         const handleFormSubmission = (e) => {
             e.preventDefault()
 
-            emailjs.sendForm('service_1u0rdtf', 'template_ernl9ot', form.current, process.env.REACT_APP_EMAILJS)
+            emailjs.sendForm('service_1u0rdtf', 'template_ernl9ot', form.current, loaderData.email)
                 .then((result) => {
                     handleSuccess()
                     console.log(result.text);
@@ -116,6 +120,7 @@ export default function Toolbox(props) {
                                                 endIcon={<SendIcon />}
                                                 onClick={handleFormSubmission}
                                         >Submit</Button>
+
                                     }
                                     { submission.success &&
                                         <Button variant="contained"
@@ -131,6 +136,9 @@ export default function Toolbox(props) {
                                                 onChange={handleError}
                                         >Submit</Button>
                                     }
+                                    <ReCAPTCHA
+                                        sitekey={loaderData.recaptchaClient}
+                                        />
                                 </Box>
                             </form>
                         </Container>
