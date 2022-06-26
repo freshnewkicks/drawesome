@@ -21,8 +21,6 @@ import { useLoaderData } from "@remix-run/react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Toolbox(props) {
-    let loaderData = useLoaderData()
-
 
     // state always sets drawer to the left
     const [toolboxOpen, setToolboxOpen] = useState(false);
@@ -31,6 +29,8 @@ export default function Toolbox(props) {
     const [openColorModal, setOpenColorModal] = useState(false);
     const [openPencilModal, setOpenPencilModal] = useState(false);
     const [openContactModal, setContactMeModal] = useState(false);
+    const loaderData = useRef(useLoaderData())
+
     const form = useRef()
 
     useEffect(() => {
