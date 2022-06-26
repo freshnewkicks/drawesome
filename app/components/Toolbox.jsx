@@ -1,35 +1,157 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import {HiColorSwatch, HiGlobeAlt, HiMail, HiOutlineNewspaper, HiPencil, HiQuestionMarkCircle} from "react-icons/hi";
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import Input from '@mui/material/Input';
+import { HiColorSwatch, HiGlobeAlt, HiMail, HiOutlineNewspaper, HiPencil, HiQuestionMarkCircle } from "react-icons/hi";
 import { GoMarkGithub } from "react-icons/go";
 import Modal from "@mui/material/Modal";
 import { GooglePicker } from "react-color";
+import SendIcon from '@mui/icons-material/Send'
+import emailjs from '@emailjs/browser';
+import { useLoaderData } from "@remix-run/react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Toolbox(props) {
+    let loaderData = useLoaderData()
+
+
     // state always sets drawer to the left
     const [toolboxOpen, setToolboxOpen] = useState(false);
     const [currentColor, setCurrentColor] = useState();
     const [currentPencil, setCurrentPencil] = useState(0);
     const [openColorModal, setOpenColorModal] = useState(false);
     const [openPencilModal, setOpenPencilModal] = useState(false);
+    const [openContactModal, setContactMeModal] = useState(false);
+    const form = useRef()
 
     useEffect(() => {
         props.passPencil(currentPencil)
-    }, [currentPencil])
+
+    }, [props, currentPencil])
+
+
+    const ContactMe = () => {
+        const [submission, setSubmission] = useState({
+            waiting: true,
+            success: false,
+            error: false,
+        })
+
+
+        const handleFormSubmission = (e) => {
+            e.preventDefault()
+
+            emailjs.sendForm('service_1u0rdtf', 'template_ernl9ot', form.current, loaderData.email)
+                .then((result) => {
+                    handleSuccess()
+                    console.log(result.text);
+                }, (error) => {
+                    handleError()
+                    console.log(error.text);
+                });
+        }
+
+        const handleSuccess = () => {
+            setSubmission({
+                waiting: false,
+                success: true,
+                error: false,
+            })
+        }
+
+        const handleError = () => {
+            setSubmission({
+                waiting: false,
+                success: false,
+                error: true,
+            })
+        }
+
+        return (
+            <>
+                <div className="flex justify-center items-center position absolute w-1/2 h-3/4 bg-gray-200 rounded-md">
+                    <div className='flex flex-col justify-center'>
+                        <h1 className="text-center text-xl pb-4">Contact Me</h1>
+                        <Container maxWidth="lg">
+                            <form ref={form}>
+                                <Box sx={{
+                                    width: 250,
+                                    height: 50,
+                                    paddingBottom: 8
+                                }}>
+                                    <FormControl>
+                                    <Input placeholder="Your Name" id="name-basic" />
+                                    </FormControl>
+                                </Box>
+                                <Box sx={{
+                                    width: 250,
+                                    height: 50,
+                                    paddingBottom: 8
+                                }}>
+                                    <FormControl>
+                                        <Input placeholder="Your Email" id="email-basic" />
+                                    </FormControl>
+                                </Box>
+                                <Box sx={{
+                                    width: 250,
+                                    height: 50,
+                                    paddingBottom: 8
+                                }}>
+                                    <FormControl>
+                                        <Input placeholder="Company Name (optional)" id="company-name-basic" />
+                                    </FormControl>
+                                </Box>
+                                <Box sx={{
+                                    width: 250,
+                                    height: 50,
+                                    paddingBottom: 4
+                                }}>
+                                    { submission.waiting &&
+                                        <Button variant="contained"
+                                                endIcon={<SendIcon />}
+                                                onClick={handleFormSubmission}
+                                        >Submit</Button>
+
+                                    }
+                                    { submission.success &&
+                                        <Button variant="contained"
+                                                color="success"
+                                                endIcon={<SendIcon />}
+                                                onChange={handleSuccess}
+                                        >Submit</Button>
+                                    }
+                                    { submission.error &&
+                                        <Button variant="contained"
+                                                color="error"
+                                                endIcon={<SendIcon />}
+                                                onChange={handleError}
+                                        >Submit</Button>
+                                    }
+                                    <ReCAPTCHA
+                                        sitekey={loaderData.recaptchaClient}
+                                        />
+                                </Box>
+                            </form>
+                        </Container>
+                    </div>
+                </div>
+            </>
+        )
+    }
 
     const PencilPicker = () => {
 
         function passPencil(size) {
             setCurrentPencil(size)
-            return
         }
 
         return (
@@ -79,6 +201,14 @@ export default function Toolbox(props) {
         }
     }
 
+    const handleContactMe = () => {
+        if (openContactModal) {
+            setContactMeModal(false)
+        } else {
+            setContactMeModal(true)
+        }
+    }
+
 
     const toggleDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -99,7 +229,6 @@ export default function Toolbox(props) {
                     <ListItem key={text} disablePadding>
                             {text === 'Color Picker' &&
                                 <ListItemButton
-                                    fullWidth={true}
                                     onClick={handleColorModal}
                                     sx={{
                                     width: '100%',
@@ -113,7 +242,6 @@ export default function Toolbox(props) {
                             }
                             {text === 'Pencil Size' &&
                                 <ListItemButton
-                                    fullWidth={true}
                                     onClick={handlePencilModal}
                                     sx={{
                                     width: '100%',
@@ -127,7 +255,7 @@ export default function Toolbox(props) {
                                 </ListItemButton>
                             }
                             {text === 'Find Game' &&
-                                <ListItemButton fullWidth={true} sx={{
+                                <ListItemButton sx={{
                                     width: '100%',
                                     height: '100%',
                                 }}>
@@ -138,7 +266,7 @@ export default function Toolbox(props) {
                                 </ListItemButton>
                             }
                             {text === 'FAQ' &&
-                                <ListItemButton fullWidth={true} sx={{
+                                <ListItemButton sx={{
                                     width: '100%',
                                     height: '100%',
                                 }}>
@@ -156,14 +284,41 @@ export default function Toolbox(props) {
             <List>
                 {['Contact Me', 'Resume', 'Github'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index === 0 && <HiMail />}
-                                {index === 1 && <HiOutlineNewspaper />}
-                                {index === 2 && <GoMarkGithub />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
+                        {text === 'Contact Me' &&
+                            <ListItemButton
+                                onClick={handleContactMe}
+                                sx={{
+                                width: '100%',
+                                height: '100%',
+                            }}>
+                                <ListItemIcon>
+                                    <HiMail />
+                                </ListItemIcon>
+                                {text}
+                            </ListItemButton>
+                        }
+                        {text === 'Resume' &&
+                            <ListItemButton sx={{
+                                width: '100%',
+                                height: '100%',
+                            }}>
+                                <ListItemIcon>
+                                    <HiOutlineNewspaper />
+                                </ListItemIcon>
+                                {text}
+                            </ListItemButton>
+                        }
+                        {text === 'Github ' &&
+                            <ListItemButton sx={{
+                                width: '100%',
+                                height: '100%',
+                            }}>
+                                <ListItemIcon>
+                                    <GoMarkGithub />
+                                </ListItemIcon>
+                                {text}
+                            </ListItemButton>
+                        }
                     </ListItem>
                 ))}
             </List>
@@ -209,7 +364,18 @@ export default function Toolbox(props) {
                                 <Box>
                                     <PencilPicker />
                                 </Box>
-
+                        </Modal>
+                    }
+                    {openContactModal &&
+                        <Modal
+                            open={openContactModal}
+                            onClose={handleContactMe}
+                            aria-labelledby="contact-modal"
+                            aria-describedby="the contact me modal"
+                            className="flex  justify-start items-center position absolute h-full w-full justify-center z-40">
+                            <Box className="flex justify-center items-center">
+                                <ContactMe />
+                            </Box>
                         </Modal>
                     }
                 </React.Fragment>
