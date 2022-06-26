@@ -29,6 +29,7 @@ export default function Toolbox(props) {
     const [openColorModal, setOpenColorModal] = useState(false);
     const [openPencilModal, setOpenPencilModal] = useState(false);
     const [openContactModal, setContactMeModal] = useState(false);
+
     const loaderData = useRef(useLoaderData())
 
     const form = useRef()
@@ -74,6 +75,10 @@ export default function Toolbox(props) {
                 success: false,
                 error: true,
             })
+        }
+
+        const returnCaptchaKey = () => {
+            return loaderData.recaptchaClient
         }
 
         return (
@@ -137,7 +142,7 @@ export default function Toolbox(props) {
                                         >Submit</Button>
                                     }
                                     <ReCAPTCHA
-                                        sitekey={loaderData.recaptchaClient}
+                                        sitekey={returnCaptchaKey()}
                                         />
                                 </Box>
                             </form>
