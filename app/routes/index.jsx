@@ -4,7 +4,6 @@ import Timer from '../components/Timer'
 import { useEffect, useState } from 'react'
 import Toolbox from '../components/Toolbox'
 import { Snackbar } from "@mui/material";
-import { useLoaderData } from "@remix-run/react";
 
 export const loader = async() => {
     return {
@@ -14,32 +13,6 @@ export const loader = async() => {
     }
 }
 
-
-export const ReCaptcha = () => {
-    let loaderData = useLoaderData()
-
-    const client = new Grecaptcha(loaderData.recaptchaClient)
-
-    client.verify(loaderData.recaptchaServer)
-        .then( (accepted) => {
-            console.log('accepted')
-        })
-        .then( (error) => {
-            console.log(error)
-        })
-    const onloadCallback = () => {
-        grecaptcha.render("recaptcha", {
-            sitekey: loaderData.recaptchaServer,
-            callback: function() {
-                console.log('im loaded!')
-            }
-        })
-    }
-
-     fetch(`https://www.google.com/recaptcha/api.js?onload=${onloadCallback}&render=explicit`)
-         .then( (resp) => resp.json())
-         .catch((err) => console.log(err))
-}
 
 export default function App() {
 
